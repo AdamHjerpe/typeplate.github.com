@@ -1,25 +1,20 @@
 @import "queries";
-@import "fontello";
 
-// So I measured the typographic attributes of meta-serif and came up
-// with the following values.
+// Typographic Attributes of Meta-serif
 //
-// border-radius
+// BORDER-RADIUS:
+// All radius' should be a multiple of 2. Meta-serif has a slight
+// softness but not by much if at all on arms and serifs.
 //
-// should be a multiple of 2. meta-serif has a slight softness but not
-// by much if at all on arms and serifs.
-//
-//borders
-//
-// I like to play off the weight of typographic attributes and in our
-// case the stems of glyphs. Borders should be a multiple of 16 or
-// divisible by 16.
+// BORDERS:
+// All borders should be a multiple of 16 or divisible by 16.
+
 
 // $Compass Extends
 // ============================================================
 
 %transition {
-	@include transition(.3s all ease-in-out);
+	transition: .3s all ease-in-out;
 }
 
 
@@ -27,7 +22,7 @@
 // ============================================================
 
 * {
-	@include box-sizing(border-box);
+	box-sizing: border-box;
 }
 
 html {
@@ -37,7 +32,7 @@ html {
 }
 
 body {
-	background: image-url("subtle_grunge.png") top left repeat;
+	background: url("../img/subtle_grunge.png") top left repeat;
 	color: #212121;
 }
 
@@ -63,7 +58,6 @@ p code,
 }
 
 abbr {
-	// @include smallcaps(gray, 600);
 	// ff-meta-serif has no real small caps, so we fake it
 	font-variant: normal;
 	text-transform: uppercase;
@@ -71,6 +65,10 @@ abbr {
 	&:hover {
 		cursor: help;
 	}
+}
+
+abbr[title="syntactically awesome stylesheets"] {
+	text-transform: capitalize;
 }
 
 dl {
@@ -86,7 +84,7 @@ img {
 }
 
 section {
-	padding: $line-height * 0.5em 0 $line-height * 1em;
+	padding: $typl8-line-height * 0.5em 0 $typl8-line-height * 2em;
 	@extend %rhythm;
 }
 
@@ -94,20 +92,34 @@ section {
 	width: 92%;
 	max-width: 40em;
 	margin: 0 auto;
+
+	&.top {
+		@include breakpoint(baby-bear) {
+			padding-top: 15em;
+		}
+	}
+}
+
+.list-reset {
+	list-style-type: none;
+	margin-left: 0;
+	padding-left: 0;
 }
 
 hr {
 	border: 0;
 	height: 0;
 	padding: 0;
-	border-top: 1px solid grey;
-	border-bottom: 1px solid hsla(0, 0%, 100%, 0.5);
+	border-top: 1px solid rgba(0, 0, 0, 0.29);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+
 	&.fancy {
 		border-bottom: 1px solid $cobalt-fade;
 		margin: 0 0 1.65em;
 		text-align: center;
-		&:after {
-			@extend .delta;
+
+		&::after {
+			@extend .typl8-delta;
 			background-color: #fcfcfc;
 			color: $cobalt-fade;
 			content: "§";
@@ -117,12 +129,13 @@ hr {
 	}
 }
 
+
 // $Logo
 // ============================================================
 
 .logo {
-	vertical-align: -200%; // why? NO IDEA. But 'middle' doesn't quite line up as nicely
-	margin-right: $line-height * 1rem;
+	vertical-align: -50%; // why? NO IDEA. But 'middle' doesn't quite line up as nicely
+	margin-right: $typl8-line-height * 1rem;
 	cursor: pointer;
 
 	@include breakpoint(papa-bear) {
@@ -134,15 +147,29 @@ hr {
 		display: block;
 		text-align: center;
 		margin-right: 0;
+
+		width: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
 	}
 }
 
 .logo-img {
-	background: image-url("logo.png") 50% no-repeat;
 	width: 12em;
-	background-size: cover;
 
-	&:before {
+	.svg & {
+		background: url("../img/logo.png") 50% no-repeat;
+		background-size: 100%;
+	}
+
+	.no-svg &,
+	.no-js & {
+		background: url("../img/logo.png") 50% no-repeat;
+		background-size: cover;
+	}
+
+	&::before {
 		content: "";
 		display: block;
 		width: 0;
@@ -154,7 +181,7 @@ hr {
 	}
 
 	@include breakpoint(baby-bear) {
-		width: 10em;
+		margin: #{$typl8-line-height/2}em auto;
 	}
 }
 
@@ -164,11 +191,11 @@ hr {
 
 .header {
 	padding-top: 1.65em;
-	background: $white image-url("typeplate-press.png") center bottom no-repeat;
-	// break
+	background: $white url("../img/typeplate-press.png") center bottom no-repeat;
+
 	@include breakpoint(baby-bear) {
-		text-align: center;
 		padding-top: 0;
+
 		p {
 			text-align: left;
 		}
@@ -188,135 +215,140 @@ hr {
 // ============================================================
 
 .nav {
-	// in preparation for inline-block children
-	letter-spacing: -4px;
-	//@extend %rhythm;
 	display: inline-block;
 	@include breakpoint(baby-bear) {
-		padding-top: 0.825em;
+		padding: #{$typl8-line-height * 2.5}em 0 0;
 		display: block;
-		text-align: center;
 	}
-}
-
-.nav.nav-primary {
-	@media screen and (min-width: 37.5625em) and (max-width: 47.3125em) {
-		margin-top: 5em;
+	@media screen and (max-width: 44.9375em) {
+		display: block;
 	}
 }
 
 .nav-item {
+	@extend .typl8-delta;
 	border-bottom: 1.5px solid rgba(156, 153, 153, 0.69);
-	letter-spacing: normal;
 	display: block;
-	@extend .delta;
-	line-height: 2;
-	padding: 0 0.5em 0 0.25em;
 	margin-bottom: 0;
+	padding: 0 0.5em 0 0.25em;
+	line-height: 2;
+	letter-spacing: normal;
 	color: $rust;
+
 	&:hover,
 	&:focus {
 		text-decoration: none;
-		background: #f7f7f7;
 		color: #000000;
 	}
+
 	&:last-child {
 		border-bottom: none;
 	}
-	&:before {
-		content: "→ ";
-	}
-	// break
-	@include breakpoint(baby-bear) {
-		&:before {
-			content: "";
-		}
-		border-radius: 0.333333em;
-		display: inline-block;
-		padding: 0.825em;
-		margin-right: 0.5em;
-		font-family: Monaco, Consolas, monospace;
-		font-size: 0.825em;
-		background: $cobalt-deep;
-		color: $white;
-		&:visited {
-			color: $white;
-		}
-		&:hover,
-		&:focus {
-			background: $rust;
-			color: white;
-		}
-	}
 }
+
+
+// $Downloads
+// ============================================================
 
 .dl-item,
 .social-item {
-	display: inline-block;
-	letter-spacing: normal;
 	border-radius: 0.333333em;
+	display: inline-block;
 	font-family: Monaco, Consolas, monospace;
 	font-size: 0.825em;
+	letter-spacing: normal;
 	text-align: center;
 }
 
-.downloads {
-	background: $cobalt-deep image-url("asfalt.png") top left repeat;
-	padding: 1.65em 0;
-	display: block;
-	.icon-download {
-		color: $white;
-	}
-}
-.dl-item {
+
+.btn {
 	@extend %transition;
-	padding: $line-height * 0.5rem;
-	width: 23%;
-	margin-right: 2%;
-	background: $cobalt-fade;
-	color: $cobalt-deep;
-	// pseudo
+	border: none;
+	padding: $typl8-line-height * 0.5rem;
+	background: rgba(41, 41, 41, 0.97);
+
 	&:last-of-type {
 		margin-right: 0;
 	}
+
 	&:hover,
 	&:focus {
-		background: $rust;
-		color: white;
+		background: $download-btn-hover;
+		color: $white;
 		text-decoration: none;
 	}
-	// filesize line
+
 	small {
 		font-size: 80%;
 	}
-	// break
+
+	&.btn-backtotop {
+		width: 30%;
+		text-rendering: optimizeLegibility;
+	}
+
 	@include breakpoint(bigass-bear) {
 		font-size: 0.75em;
-		padding: $line-height * 0.35rem;
+		padding: $typl8-line-height * 0.35rem;
 	}
-	// break
+
 	@include breakpoint(papa-bear) {
 		font-size: 1em;
-		padding: $line-height * 0.5rem;
+		padding: $typl8-line-height * 0.5rem;
 		width: 100%;
-		margin-right: 0;
-		margin-bottom: 1.65em;
 	}
 }
+
+
+.downloads {
+	display: block;
+	padding: 1.65em 0;
+	background: $cobalt-deep url("../img/asfalt.png") top left repeat;
+
+	.col-wrap{
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+	}
+}
+
+
+.dl-item {
+	box-shadow: -1px -1px 1px rgba(255, 255, 255, 0.08), 1px 1px 1px rgb(0, 0, 0);
+	flex: 0 0 23.5%;
+	position: relative;
+	background: rgba(41, 41, 41, 0.22);
+	color: $white;
+
+	&::after {
+		content: attr(aria-label);
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -26px;
+		color: white;
+	}
+}
+
+
+// $Social Navigation
+// ============================================================
 
 .social-nav {
 	position: absolute;
 	top: 1.65em;
 	right: 1.65em;
-	// break
+	@include breakpoint(baby-bear) {
+		top: 12.5em;
+		left: 0;
+		padding: #{$typl8-line-height/2}em;
+		width: 100%;
+		text-align: center;
+		background: $cobalt-deep url("../img/asfalt.png") top left repeat;
+	}
 	@include breakpoint(mama-bear) {
-		position: static;
 		margin-top: 0.825em;
 		margin-bottom: 0.825em;
-	}
-	// break
-	@media screen and (min-width: 31.25em) and (max-width: 37.5em) {
-		text-align: right;
 	}
 }
 
@@ -326,6 +358,10 @@ hr {
 	padding: 0 0.825em 0 0;
 	background: $cobalt-fade;
 	color: $cobalt-deep;
+	@include breakpoint(baby-bear) {
+		border: 2px solid #BBAFAF;
+	}
+
 	i {
 		background: $cobalt-deep;
 		color: $white;
@@ -335,7 +371,7 @@ hr {
 		border-top-left-radius: 0.333333em;
 		border-bottom-left-radius: 0.333333em;
 	}
-	// pseudo
+
 	&:hover,
 	&:focus {
 		text-decoration: none;
@@ -344,98 +380,113 @@ hr {
 	}
 }
 
+
 // $Table of Contents
 // ============================================================
 
 .toc {
-	//border: 3px solid #afbac4;
 	border-radius: 0 0 6px 6px;
-	background: #d5d5d5;
-	background: rgba(0, 0, 0, 0.1);
-	box-shadow: inset 0 6px 4px rgba(0, 0, 0, 0.37);
+	background: #DE4D1F;
 	@extend %rhythm;
+	padding-bottom: #{$typl8-line-height}em;
 }
+
 .toc ol {
-	list-style: decimal !important;
 	counter-reset: item;
-	padding: 0 40px;
+	list-style: decimal !important;
+	padding-left: 0;
 }
+
 .toc li {
-	border-bottom: 2px dotted #949494;
 	display: block;
-	@extend .zeta;
+	@extend .typl8-zeta;
 }
+
+.toc a {
+	transition: none;
+	color: #6B2813;
+	&:hover {
+		border-bottom: 1.5px solid #000;
+		text-decoration: none;
+		color: #000;
+	}
+}
+
+.toc li a {
+	color: #6B2813;
+}
+
 .toc ol li:before {
 	counter-increment: item;
-	color: #444;
+	color: rgba(255, 255, 255, 0.7);
 	font-style: normal;
 	font-family: "Cassannet", "ff-meta-serif-web-pro", serif;
 }
 
-// epic loop wizardy!
 @for $i from 1 through 4 {
 	.toc ol:nth-of-type(#{$i}) li:before {
-		content: "#{$i}." counter(item) " – ";
+		content: "#{$i}." counter(item) " ... ";
 	}
 }
 
+.example ul li:hover {
+	content: attr(data-alt);
+}
 
-// $TOC Pull Down
+
+// $TOC
 // ============================================================
 
 #table-of-contents {
 	h1 {
 		margin: 0;
-		padding-top: .5em;
-		text-shadow: 0 1px 0 $white;
-		color: #606060;
-		.icon-download {
-			color: #929292;
-		}
-		&::after {
-			content: "click for action";
-			display: block;
-			font-size: .5em;
-			color: scale-lightness(#EFEFEF, -35%);
-		}
+		padding-top: 0.5em;
+		color: white;
+
 		&:hover {
 			cursor: pointer;
 		}
 	}
-	h2 {
-		color: #6f7070;
-		text-align: center;
-		text-shadow: 0 1px 0 rgba(255,255,255,0.30);
-	}
 }
 
 #drawer {
-	padding: 1.5em 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: baseline;
+	align-content: flex-start;
+	height: 0;
+	min-height: 0;
+	opacity: 0;
+	padding-left: 50px;
+	padding-right: 50px;
+	position: relative;
+	transition: 480ms all cubic-bezier(0.68, -0.55, 0.27, 1.55);
 	color: white;
+
 	&::after {
-		border-radius: 80%;
-		box-shadow: 0 1px 4px rgba(0,0,0,0.90), 0 -2px 1px rgba(255,255,255,0.90);
-		content: "{T}";
+		@extend .typl8-gamma;
+		content: "{ T }";
 		display: block;
-		height: 2.5em;
-		line-height: 2.5;
-		margin: 0 auto;
-		width: 2.5em;
-		@extend .gamma;
+		position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transition: 480ms opacity cubic-bezier(0.68, -0.55, 0.27, 1.55);
 		text-align: center;
-		text-shadow: 0 1px 0 $white;
-		border: 4px solid #949494;
-		background: #000000;
 		color: #fbfbfb;
 	}
-}
 
+	&.slide-down {
+		min-height: 28em;
+		opacity: 1;
+		padding-top: 42px;
+	}
 
-// $Back to Top
-// ============================================================
-
-a[href="#table-of-contents"] {
-	@extend .dl-item;
+	&.slide-down::after {
+		opacity: 1;
+	}
 }
 
 
@@ -443,50 +494,24 @@ a[href="#table-of-contents"] {
 // ============================================================
 
 .example {
-	background: transparentize($cobalt-fade, 0.5);
-	border: 1px solid $cobalt-fade;
-	box-shadow: 0 0 1px hsla(0, 0%, 100%, 0.75);
-	padding: $line-height * 1rem $line-height * 1rem 0;
-	margin: $line-height * 1.5rem 0 $line-height * 1rem;
-	border-radius: 0.333333em;
-	&:before {
-		content: "example:";
-		@extend .epsilon;
-		display: block;
-		font-family: "Cassannet", sans-serif;
-		background: none;
-		line-height: 0;
-		position: relative;
-		color: #212121;
-		top: -2.125em;
-		left: -1.65rem;
-	}
+	border-radius: 2px;
+	margin-left: 0;
+	margin-right: 0;
+	padding: 20px 20px 10px;
+	background: rgba(204, 204, 204, 0.38);
 }
+
+.example--ampersand {
+	background: transparent;
+	padding-bottom: 0;
+}
+
 .example > pre {
 	margin-top: 0;
 	overflow: auto;
 	white-space: pre;
 	word-spacing: normal;
-	@extend %normal-wrap;
-}
-
-// hotfix for typographic scale example
-.example.scale-example {
-	padding: 1.65em;
-	p {
-		line-height: 1.4;
-		margin: 0;
-	}
-	.giga {
-		margin-top: -0.33em;
-	}
-}
-
-.example.no-top-pad {
-	padding-top: 0;
-	&:before {
-		top: -0.65em;
-	}
+	@extend %typl8-normal-wrap;
 }
 
 
@@ -495,7 +520,7 @@ a[href="#table-of-contents"] {
 
 // this is breakpoint baby bear
 .section-title {
-	@include modular-scale($delta, $font-base, '#{$type-scale-unit-value}', $measure);
+	@include typl8-typescale($typl8-delta, $typl8-font-base, '#{$typl8-typescale-unit}', $typl8-measure);
 }
 
 
@@ -521,7 +546,7 @@ a[href="#table-of-contents"] {
 		font-size: 0.825em;
 		background: #021321;
 		box-shadow: 0 0 1px hsla(0, 0%, 100%, 0.75);
-		padding: $line-height * 1rem;
+		padding: $typl8-line-height * 1rem;
 		.no-js & {
 			overflow: auto;
 		}
@@ -540,45 +565,18 @@ a[href="#table-of-contents"] {
 
 blockquote {
 	font-style: italic;
-	@extend .epsilon;
-	// so there's no extra line separating the quote and the citation
-	p:last-of-type {
-		margin-bottom: 0;
-	}
-	cite {
-		font-style: normal;
-		@extend %cite;
-		&:before {
-			content:"—";
-		}
-	}
-	// make more readable at narrow widths
-	@include breakpoint(baby-bear) {
-		margin: 1.5em 0.75em;
-
-		cite {
-			text-align: left;
-		}
+	@include typl8-blockquote("—");
+	& + figcaption {
+		@extend .typl8-epsilon;
 	}
 }
-
-
-// $Typographic Scale Demo
-// ============================================================
-
-// this is a peculiar instance because we're stacking lots of titles atop one another
-// so we manually nix the normal amount of margin below titles
-// .typographic-scale .no-indent {
-// 	margin: 0;
-// 	text-indent: 0;
-// }
 
 
 // $Ampersand Demo
 // ============================================================
 
 .amp {
-	@extend %ampersand-placeholder;
+	@extend %typl8-amp-placeholder;
 	padding: 0;
 	margin-top: -0.5em;
 	line-height: 1;
@@ -607,7 +605,7 @@ blockquote {
 // ============================================================
 
 .pull-example {
-	padding-bottom: 1em;
+	padding-bottom: 2em;
 }
 
 
@@ -615,28 +613,12 @@ blockquote {
 // ============================================================
 
 .icons {
-	@extend .beta;
+	@extend .typl8-beta;
 	.fs1 {
 		display: inline-block;
 		&:before {
 			padding-right: .25em;
-			color: gray;
-		}
-	}
-}
-
-
-// $Stats Tab Demo
-// ============================================================
-
-.stats-tabs {
-	text-align: center;
-	a {
-		color: #000;
-	}
-	li {
-		@include breakpoint(baby-bear) {
-			margin: 0 0 1em;
+			color: #3A1414;
 		}
 	}
 }
@@ -653,55 +635,46 @@ blockquote {
  */
 
 body {
+	opacity: 0;
+	transition: 250ms opacity ease-in-out;
 	font-weight: 400;
+
 	.wf-loading & {
-		//Typekit Active FOUT Loading
 		font-family: serif;
 		visibility: hidden;
 	}
+
+	.no-js &,
 	.wf-active &,
 	.wf-inactive & {
+		opacity: 1;
+		visibility: visible;
 		font-family: "ff-meta-serif-web-pro",serif;
 		font-weight: 400;
-		visibility: visible;
 	}
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	font-weight: 700;
 }
-
-
-// $Cassannet @font-face
-// ============================================================
-// We use a helper from our compass config for this
-// http://compass-style.org/reference/compass/css3/font_face/
-
-// Cassannet Regular
-@include font-face("Cassannet", font-files(
-	"cassannet/cassannet.eot", ///* IE9 Compat Modes */
-	"cassannet/cassannet.eot?#iefix", // IE6-IE8
-	"cassannet/cassannet.woff", // Modern Browsers
-	"cassannet/cassannet.ttf", // Safari, Android, iOS
-	"cassannet/cassannet.svg#svgFontName" // Legacy iOS
-));
-// Cassannet Bold
-// @include font-face("Cassannet Bold", font-files(
-//     "cassannet/cassannet-bold.eot", ///* IE9 Compat Modes */
-//     "cassannet/cassannet-bold.eot?#iefix", // IE6-IE8
-//     "cassannet/cassannet-bold.woff", // Modern Browsers
-//     "cassannet/cassannet-bold.ttf", // Safari, Android, iOS
-//     "cassannet/cassannet-bold.svg#svgFontName" // Legacy iOS
-// ));
-
 
 
 // $Footer
 // ============================================================
 
 .site-footer {
-	margin-top: 3em;
 	font-size: 75%;
+	width: 100%;
+	background: #131415 url("../img/asfalt.png") top left repeat;
+	color: #9E9E9E;
+	text-align: center;
+	height: 100%;
+	padding: #{$typl8-line-height * 1.5}em 0 #{$typl8-line-height/2}em;
 	a {
 		color: #de4d1f;
 	}
@@ -720,19 +693,32 @@ h1, h2, h3, h4, h5, h6 {
 	letter-spacing: 0.125rem;
 }
 
-
 // generic bottom rule class
 .botDivider {
-	border-bottom: 0.44444444rem solid $botDividerBorder;// Thickness is based on the thickness of meta-serif stems (measured 8px at 18px font-size)
+	border-bottom: #{$typl8-font-size/800}rem solid $botDividerBorder;// Thickness is based on the thickness of meta-serif stems (measured 8px at 18px font-size)
+	position: relative;
+	&:last-child {
+		border-bottom: none;
+	}
 	&.bright {
 		border-bottom-color: $rust;
+	}
+	&:not(.base-type):not(.header):after {
+		@extend .typl8-gamma;
+		content: "{T}";
+		position: absolute;
+		top: -#{typl8-context-calc($typl8-font-base, 14, em)};
+		left: 45%;
+		width: typl8-context-calc($typl8-font-base, 14, em);
+		text-align: center;
+		background: rgb(255, 255, 255) url("../img/subtle_grunge.png") top left repeat;
 	}
 }
 
 //control our vertical rhythm
 %rhythm {
 	margin-top: 0;
-	margin-bottom: $line-height * 1rem;
+	margin-bottom: $typl8-line-height * 1rem;
 }
 
 
@@ -751,49 +737,71 @@ p.no-indent {
 // $Drop Cap
 // ============================================================
 
-// This selector class is not included in the actual stylsheet. We leave it for you to decide
-// when to use it. We only provide you with the @mixin. This is just an example of
-// our chosen class selector purely for demo purposes.
-.drop-cap {
-	@include dropcap($margin: 0, $padding: 0.125em 0.125em 0 0, $font-size: 6em, $lineHeight: 0.5, $font-family: Copperplate);
+.typl8-drop-cap {
+	@include typl8-dropcap($typl8-dropcap-float-position, $typl8-dropcap-font-size, $typl8-dropcap-font-family, $typl8-dropcap-txt-indent, $typl8-dropcap-margin, $typl8-dropcap-padding, $typl8-dropcap-color, $typl8-dropcap-line-height, $typl8-dropcap-bg);
 }
 
 
 // $Definition Lists
 // ============================================================
 
-.lining {
-	@include definition-list-style(lining);
+.typl8-lining {
+	@include typl8-definition-list-style(lining);
 }
 
-.dictionary-style {
-	@include definition-list-style(dictionary-style);
+.typl8-dictionary-style {
+	@include typl8-definition-list-style(dictionary-style);
 }
 
 
-// $Helpers
+
+// $Carbon Ads
 // ============================================================
 
-//Hide only visually, but have it available for screenreaders: h5bp.com/v
-.visuallyhidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
+#carbonads {
+  border-bottom: 1px solid rgba(116, 109, 109, 0.08);
+  min-height: 100px;
+  position: relative;
+  opacity: 0;
+  animation: fade .3s forwards 1;
+  background: rgba(250, 250, 250, 0.64);
+}
+.carbon-wrap {
+  display: block;
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+}
+.carbon-wrap > a {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 6px;
+  font-size: 16px;
+  line-height: 1.25;
+}
+.carbon-img img {
+  animation: fade .3s forwards 1;
+  vertical-align: middle;
+  opacity: 0;
+}
+.carbon-text {
+  color: rgb(185, 185, 186);
+}
+.carbon-poweredby {
+  padding-right: 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 40px;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: right;
+  font-size: 12px;
+  color: rgba(105, 118, 118, 0.46);
+  font-style: italic;
 }
 
-// Extends the .visuallyhidden class to allow the element to be focusable
-// when navigated to via the keyboard: h5bp.com/p
-.visuallyhidden.focusable:active,
-.visuallyhidden.focusable:focus {
-    clip: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    position: static;
-    width: auto;
+@keyframes fade {
+  to {opacity: 1;}
 }

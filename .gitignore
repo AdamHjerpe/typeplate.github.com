@@ -7,12 +7,19 @@ publish
 #Hidden Mac dir Files
 .DS_Store
 
-# Sass Cache dir
+# Sass
 .sass-cache
+css/*.map
+scss/*.map
 
-# this generates upon running yeoman server
-# and is annoying
+# NPM
 npm-debug.log
+
+# NODE
+node_modules
+
+# Bower
+bower_components
 
 #fire app log file
 fire_app_log.txt
